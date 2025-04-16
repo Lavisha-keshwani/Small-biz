@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Select a Business</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #fff8f3;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: #ffddd2;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #6b4f4f;
+    }
+
+    .business-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2rem;
+      gap: 1.5rem;
+    }
+
+    .business-card {
+      background: #fff;
+      border: 2px solid #f2c2ae;
+      border-radius: 12px;
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .business-card:hover {
+      background: #fff0e6;
+      transform: translateY(-2px);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.4);
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal-content {
+      background: #fffaf7;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h2 {
+      margin-bottom: 1rem;
+    }
+
+    .modal-content button {
+      background: #ff6f61;
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .categories-page {
+      display: none;
+      padding: 2rem;
+    }
+
+    .category-table {
+      margin-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .category-card {
+      border: 2px solid #f4c9be;
+      border-radius: 10px;
+      padding: 1rem;
+      background: #fff;
+      text-align: center;
+    }
+
+    .category-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .category-card h4 {
+      margin-top: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>🛒 Choose a Business to Shop From</header>
+
+  <div class="business-list" id="businessList">
+    <div class="business-card" data-name="Artisan Avenue">🧵 Artisan Avenue</div>
+    <div class="business-card" data-name="Bamboo Bazaar">🎍 Bamboo Bazaar</div>
+    <div class="business-card" data-name="Tradition Threads">👗 Tradition Threads</div>
+    <div class="business-card" data-name="Paint & Clay Co.">🎨 Paint & Clay Co.</div>
+    <div class="business-card" data-name="Eco Gifting">🌿 Eco Gifting</div>
+  </div>
+
+  <!-- Modal with Cute Questions -->
+  <div class="modal" id="questionModal">
+    <div class="modal-content">
+      <h2>🤔 Quick Question!</h2>
+      <p>Are you shopping for a 🎁 gift, 🏠 home, or 👕 personal use?</p>
+      <button onclick="goToCategories()">Let's Go!</button>
+    </div>
+  </div>
+
+  <!-- Category Page -->
+  <div class="categories-page" id="categoriesPage">
+    <h2>📦 Shop by Category</h2>
+    <div class="category-table" id="categoryGrid">
+      <!-- Cards will be dynamically added -->
+    </div>
+  </div>
+
+  <script>
+    const businessCards = document.querySelectorAll(".business-card");
+    const modal = document.getElementById("questionModal");
+    const categoriesPage = document.getElementById("categoriesPage");
+    const categoryGrid = document.getElementById("categoryGrid");
+    let selectedBusiness = "";
+
+    const categoryData = [
+      { title: "Jewellery", img: "https://images.unsplash.com/photo-1618354691373-d8517b3aff6b" },
+      { title: "Home Decor", img: "https://images.unsplash.com/photo-1583337130417-3346a1f85df4" },
+      { title: "Clothing", img: "https://images.unsplash.com/photo-1618354692051-4a8e91a23199" },
+      { title: "Handbags", img: "https://images.unsplash.com/photo-1618354692137-f11966e379f6" },
+      { title: "Paintings", img: "https://images.unsplash.com/photo-1616627586214-c6b79e1a4ae1" },
+      { title: "Lighting", img: "https://images.unsplash.com/photo-1606811841976-e9f44d801dc2" },
+    ];
+
+    businessCards.forEach(card => {
+      card.addEventListener("click", () => {
+        selectedBusiness = card.getAttribute("data-name");
+        modal.style.display = "flex";
+      });
+    });
+
+    function goToCategories() {
+      modal.style.display = "none";
+      document.querySelector(".business-list").style.display = "none";
+      document.querySelector("header").textContent = `🛍️ Categories by ${selectedBusiness}`;
+      categoriesPage.style.display = "block";
+
+      categoryGrid.innerHTML = categoryData.map(cat => `
+        <div class="category-card">
+          <img src="${cat.img}" alt="${cat.title}">
+          <h4>${cat.title}</h4>
+        </div>
+      `).join("");
+    }
+  </script>
+
+</body>
+</html>
